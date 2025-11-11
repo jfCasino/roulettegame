@@ -83,11 +83,11 @@ public class MultiBetResponse {
             this.amount = amount;
         }
 
-        public boolean isWin() {
+        public boolean getIsWin() {
             return isWin;
         }
 
-        public void setWin(boolean isWin) {
+        public void setIsWin(boolean isWin) {
             this.isWin = isWin;
         }
 
