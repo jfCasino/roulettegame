@@ -27,7 +27,7 @@ public class RuletteController {
     }
 
     @PostMapping("/rulette/bet")
-    public ResponseEntity<Map<String, Object>> placeBet(@RequestBody MultiBetRequest request) {
+    public ResponseEntity<MultiBetResponse> placeBet(@RequestBody MultiBetRequest request) {
         //TODO mby add time_created to bets, so you can easily search for most recent 5 bets?
         //JF changes DTO SingleBetRequest to Domain bets
         List<Bet> bets = request.getBets().stream()
@@ -35,13 +35,7 @@ public class RuletteController {
             .toList();
 
         MultiBetResponse response = ruletteService.placeBet(request.getUserID(), bets);
-        return ResponseEntity.ok(Map.of(
-            "userID", request.getUserID(),
-            "spinColor", response.getSpinResultColor(),
-            "spinNumber", response.getSpinResultNumber(),
-            "totalWinnings", response.getTotalWinnings(),
-            "betResults", response.getBetResults()
-        )   );
+        return ResponseEntity.ok(response);
     }
 
     //TODO eventualy replace with communication via Kafka
