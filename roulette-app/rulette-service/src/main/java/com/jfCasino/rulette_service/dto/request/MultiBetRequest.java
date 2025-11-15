@@ -3,16 +3,16 @@ package com.jfCasino.rulette_service.dto.request;
 import java.util.List;
 
 public class MultiBetRequest {
-    private int userID;
+    private String userID;
     private List<SingleBetRequest> bets;
 
     public MultiBetRequest() {}
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

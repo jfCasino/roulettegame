@@ -39,7 +39,7 @@ public class RuletteService {
         this.mapper = mapper;
     }
 
-    public MultiBetResponse placeBet(int userID, List<Bet> bets) {
+    public MultiBetResponse placeBet(String userID, List<Bet> bets) {
         //JF create WalletReserveRequest from bets total amount
         int totalBetAmount = bets.stream().mapToInt(Bet::getAmount).sum();
         WalletReserveRequest reserveRequest = new WalletReserveRequest(userID, totalBetAmount);
@@ -115,7 +115,7 @@ public class RuletteService {
         bet2.setPayout(200);
 
         MultiBetResponse response = new MultiBetResponse();
-        response.setUserID(1);
+        response.setUserID("1");
         response.setSpinResultColor("BLACK");
         response.setSpinResultNumber(3);
         response.setTotalWinnings(200);
@@ -136,7 +136,7 @@ public class RuletteService {
         bet4.setPayout(200);
 
         MultiBetResponse response2 = new MultiBetResponse();
-        response2.setUserID(2);
+        response2.setUserID("2");
         response2.setSpinResultColor("RED");
         response2.setSpinResultNumber(4);
         response2.setTotalWinnings(0);

@@ -19,7 +19,7 @@ public class MultiBet {
     @Column(columnDefinition = "UUID", updatable = false, nullable = false)
     private UUID id;
 
-    private int userId;
+    private String userId;
 
     private String spinResultColor;
 
@@ -44,11 +44,11 @@ public class MultiBet {
         this.id = id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

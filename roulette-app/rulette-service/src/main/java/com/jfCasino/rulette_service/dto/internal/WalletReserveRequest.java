@@ -1,12 +1,12 @@
 package com.jfCasino.rulette_service.dto.internal;
 
 public class WalletReserveRequest {
-    private int userID;
+    private String userID;
     private int amount;
 
     public WalletReserveRequest() {};
 
-    public WalletReserveRequest(int userID, int amount) {
+    public WalletReserveRequest(String userID, int amount) {
         this.userID = userID;
         this.amount = amount;
     }
@@ -16,7 +16,7 @@ public class WalletReserveRequest {
         return amount;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
@@ -24,7 +24,7 @@ public class WalletReserveRequest {
         this.amount = amount;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 }

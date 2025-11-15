@@ -2,7 +2,7 @@ package com.jfCasino.rulette_service.dto.response;
 import java.util.List;
 
 public class MultiBetResponse {
-    private int userID;
+    private String userID;
     private String spinResultColor;
     private int spinResultNumber;
     private List<SingleBetResult> betResults;
@@ -10,11 +10,11 @@ public class MultiBetResponse {
 
     public MultiBetResponse() {}
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 
