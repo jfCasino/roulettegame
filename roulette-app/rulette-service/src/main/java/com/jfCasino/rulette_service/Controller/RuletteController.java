@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jfCasino.rulette_service.Domain.Bet;
-import com.jfCasino.rulette_service.dto.MultiBetRequest;
-import com.jfCasino.rulette_service.dto.MultiBetResponse;
+import com.jfCasino.rulette_service.dto.request.MultiBetRequest;
+import com.jfCasino.rulette_service.dto.response.MultiBetResponse;
 import com.jfCasino.rulette_service.Service.RuletteService;
 
 import java.util.Map;

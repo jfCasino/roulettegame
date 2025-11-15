@@ -2,8 +2,13 @@ package com.jfCasino.rulette_service.Service;
 
 import org.springframework.stereotype.Service;
 
-import com.jfCasino.rulette_service.dto.MultiBetResponse;
+import com.jfCasino.rulette_service.Client.WalletClient;
 import com.jfCasino.rulette_service.Domain.Bet;
+import com.jfCasino.rulette_service.dto.internal.WalletReserveResponse;
+import com.jfCasino.rulette_service.dto.internal.WalletCommitRequest;
+import com.jfCasino.rulette_service.dto.internal.WalletCommitResponse;
+import com.jfCasino.rulette_service.dto.internal.WalletReserveRequest;
+import com.jfCasino.rulette_service.dto.response.MultiBetResponse;
 
 import java.util.List;
 import java.security.SecureRandom;
@@ -12,20 +17,33 @@ import java.security.SecureRandom;
 public class RuletteService {
 
     private final SecureRandom secureRandom;
+
+    private final WalletClient walletClient;
     
     public static final int ROULETTE_SIZE = 36;
     public static final int ROULETTE_ZERO = 0;
     public static final int ROULETTE_1ST = 12;
     public static final int ROULETTE_2ND = 24;
 
-    public RuletteService(SecureRandom secureRandom) {
+    public RuletteService(SecureRandom secureRandom, WalletClient walletClient) {
         this.secureRandom = secureRandom;
+        this.walletClient = walletClient;
     }
 
     public MultiBetResponse placeBet(int userID, List<Bet> bets) {
-        //TODO call wallet/reserve 
+        //JF create WalletReserveRequest from bets total amount
+        int totalBetAmount = bets.stream().mapToInt(Bet::getAmount).sum();
+        WalletReserveRequest reserveRequest = new WalletReserveRequest(userID, totalBetAmount);
 
+        //JF call wallet/reserve
+        WalletReserveResponse walletReserveResponse = walletClient.postReserve(reserveRequest).getBody();
+        //JF check response status -> failed when insufficient funds
+        if (walletReserveResponse == null || walletReserveResponse.getStatus().equals(WalletReserveResponse.STATUS_FAILED)) {
+            //JF handle failed reservation (e.g., insufficient funds)
+            throw new RuntimeException("Wallet reservation failed");
+        }
 
+        //JF spin the roulette
         int spinResultNumber = secureRandom.nextInt(ROULETTE_SIZE + 1); //0-36
         String spinResultColor = (spinResultNumber == ROULETTE_ZERO) ? "GREEN" : (spinResultNumber % 2 == 0) ? "BLACK" : "RED";
         String odd_even = (spinResultNumber == ROULETTE_ZERO) ? "NONE" : (spinResultNumber % 2 == 0) ? "EVEN" : "ODD";
@@ -52,7 +70,14 @@ public class RuletteService {
         }
         response.setTotalWinnings(totalWinnings);
 
-        //TODO call wallet/commit
+        //JF commit the winnings to wallet
+        WalletCommitRequest commitRequest = new WalletCommitRequest(walletReserveResponse.getReservationID(), userID, totalWinnings);
+        WalletCommitResponse walletCommit = walletClient.postCommit(commitRequest).getBody();
+
+        //TODO change so it checks commit status
+        if(walletCommit == null) {
+            throw new RuntimeException("Wallet commit failed");
+        }
 
         return response;
     }

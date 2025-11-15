@@ -1,4 +1,4 @@
-package com.jfCasino.rulette_service.dto;
+package com.jfCasino.rulette_service.dto.response;
 import java.util.List;
 
 public class MultiBetResponse {
