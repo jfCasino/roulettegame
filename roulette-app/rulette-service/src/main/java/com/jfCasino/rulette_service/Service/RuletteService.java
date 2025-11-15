@@ -4,6 +4,9 @@ import org.springframework.stereotype.Service;
 
 import com.jfCasino.rulette_service.Client.WalletClient;
 import com.jfCasino.rulette_service.Domain.Bet;
+import com.jfCasino.rulette_service.Entities.MultiBet;
+import com.jfCasino.rulette_service.Mapper.MultiBetMapper;
+import com.jfCasino.rulette_service.Repository.MultiBetRepository;
 import com.jfCasino.rulette_service.dto.internal.WalletReserveResponse;
 import com.jfCasino.rulette_service.dto.internal.WalletCommitRequest;
 import com.jfCasino.rulette_service.dto.internal.WalletCommitResponse;
@@ -19,15 +22,21 @@ public class RuletteService {
     private final SecureRandom secureRandom;
 
     private final WalletClient walletClient;
+
+    private final MultiBetRepository multiBetRepository;
+    
+    private final MultiBetMapper mapper;
     
     public static final int ROULETTE_SIZE = 36;
     public static final int ROULETTE_ZERO = 0;
     public static final int ROULETTE_1ST = 12;
     public static final int ROULETTE_2ND = 24;
 
-    public RuletteService(SecureRandom secureRandom, WalletClient walletClient) {
+    public RuletteService(SecureRandom secureRandom, WalletClient walletClient, MultiBetRepository multiBetRepository, MultiBetMapper mapper) {
         this.secureRandom = secureRandom;
         this.walletClient = walletClient;
+        this.multiBetRepository = multiBetRepository;
+        this.mapper = mapper;
     }
 
     public MultiBetResponse placeBet(int userID, List<Bet> bets) {
@@ -78,6 +87,11 @@ public class RuletteService {
         if(walletCommit == null) {
             throw new RuntimeException("Wallet commit failed");
         }
+
+        //TODO ensure transactionality!!!!!!!!!!
+        //JF save to DB
+        MultiBet entity = mapper.toEntity(response);
+        multiBetRepository.save(entity);
 
         return response;
     }

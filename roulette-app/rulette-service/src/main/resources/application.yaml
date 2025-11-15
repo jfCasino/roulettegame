@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: Rulette Service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/rouletteDB   # your DB URL
+    username: jf76272                              # your DB username
+    password: password                          # your DB password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update     # automatically creates/updates tables based on entities
+    show-sql: true         # optional, shows SQL statements in console
+    properties:
+      hibernate:
+        format_sql: true   # optional, formats SQL nicely in logs
