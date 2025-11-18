@@ -4,7 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-//TODO remove exclude when db is configured	
 @EnableFeignClients	
 @SpringBootApplication()
 public class RuletteServiceApplication {

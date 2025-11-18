@@ -83,7 +83,7 @@ public class RuletteService {
         WalletCommitRequest commitRequest = new WalletCommitRequest(walletReserveResponse.getReservationID(), userID, totalWinnings);
         WalletCommitResponse walletCommit = walletClient.postCommit(commitRequest).getBody();
 
-        //TODO change so it checks commit status
+        //JF check if commit was successful
         if(walletCommit == null) {
             throw new RuntimeException("Wallet commit failed");
         }

@@ -13,7 +13,6 @@ import com.jfCasino.rulette_service.dto.request.MultiBetRequest;
 import com.jfCasino.rulette_service.dto.response.MultiBetResponse;
 import com.jfCasino.rulette_service.Service.RuletteService;
 
-import java.util.Map;
 import java.util.List;
 
 @RestController
@@ -28,13 +27,14 @@ public class RuletteController {
 
     @PostMapping("/rulette/bet")
     public ResponseEntity<MultiBetResponse> placeBet(@RequestBody MultiBetRequest request) {
-        //TODO mby add time_created to bets, so you can easily search for most recent 5 bets?
         //JF changes DTO SingleBetRequest to Domain bets
         List<Bet> bets = request.getBets().stream()
             .map(betRequest -> new Bet(betRequest.getBetType(), betRequest.getTarget(), betRequest.getAmount()))
             .toList();
 
         MultiBetResponse response = ruletteService.placeBet(request.getUserID(), bets);
+
+        
         return ResponseEntity.ok(response);
     }
 
