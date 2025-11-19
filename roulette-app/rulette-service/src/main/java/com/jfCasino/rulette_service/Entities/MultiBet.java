@@ -31,7 +31,7 @@ public class MultiBet {
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "multiBet", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "multiBet", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<SingleBetResult> betResults = new ArrayList<>();
 
 

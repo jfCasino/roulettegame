@@ -60,27 +60,11 @@ public class RuletteService {
                 (spinResultNumber <= ROULETTE_1ST) ? "1ST" :
                 (spinResultNumber <= ROULETTE_2ND) ? "2ND" : "3RD";
 
-        MultiBetResponse response = new MultiBetResponse();
-        response.setUserID(userID);
-        response.setSpinResultColor(spinResultColor);
-        response.setSpinResultNumber(spinResultNumber);
-        response.setBetResults(new java.util.ArrayList<>());
-        int totalWinnings = 0;
-        for (Bet bet : bets) {
-            MultiBetResponse.SingleBetResult betResult = new MultiBetResponse.SingleBetResult();
-            betResult.setBetType(bet.getBetType());
-            betResult.setTarget(bet.getTarget());
-            betResult.setAmount(bet.getAmount());
-            int payout = bet.getPayout(spinResultColor, String.valueOf(spinResultNumber), odd_even, thirds);
-            totalWinnings += payout;
-            betResult.setPayout(payout);
-            betResult.setIsWin(betResult.getPayout() > 0);
-            response.getBetResults().add(betResult);
-        }
-        response.setTotalWinnings(totalWinnings);
+        //JF create response object
+        MultiBetResponse response = mapper.toDto(userID, spinResultColor, spinResultNumber, bets, odd_even, thirds);
 
         //JF commit the winnings to wallet
-        WalletCommitRequest commitRequest = new WalletCommitRequest(walletReserveResponse.getReservationID(), userID, totalWinnings);
+        WalletCommitRequest commitRequest = new WalletCommitRequest(walletReserveResponse.getReservationID(), userID, response.getTotalWinnings());
         WalletCommitResponse walletCommit = walletClient.postCommit(commitRequest).getBody();
 
         //JF check if commit was successful
