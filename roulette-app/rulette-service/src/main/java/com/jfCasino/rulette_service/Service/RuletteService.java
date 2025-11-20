@@ -1,5 +1,9 @@
 package com.jfCasino.rulette_service.Service;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.jfCasino.rulette_service.Client.WalletClient;
@@ -15,6 +19,7 @@ import com.jfCasino.rulette_service.dto.response.MultiBetResponse;
 
 import java.util.List;
 import java.security.SecureRandom;
+
 
 @Service
 public class RuletteService {
@@ -47,7 +52,7 @@ public class RuletteService {
         //JF call wallet/reserve
         WalletReserveResponse walletReserveResponse = walletClient.postReserve(reserveRequest).getBody();
         //JF check response status -> failed when insufficient funds
-        if (walletReserveResponse == null || walletReserveResponse.getStatus().equals(WalletReserveResponse.STATUS_FAILED)) {
+        if (walletReserveResponse == null || !walletReserveResponse.getStatus().equals(WalletReserveResponse.STATUS_PENDING)) {
             //JF handle failed reservation (e.g., insufficient funds)
             throw new RuntimeException("Wallet reservation failed");
         }
@@ -61,7 +66,7 @@ public class RuletteService {
                 (spinResultNumber <= ROULETTE_2ND) ? "2ND" : "3RD";
 
         //JF create response object
-        MultiBetResponse response = mapper.toDto(userID, spinResultColor, spinResultNumber, bets, odd_even, thirds);
+        MultiBetResponse response = MultiBetMapper.MultiBetResponseFactory(userID, spinResultColor, spinResultNumber, bets, odd_even, thirds);
 
         //JF commit the winnings to wallet
         WalletCommitRequest commitRequest = new WalletCommitRequest(walletReserveResponse.getReservationID(), userID, response.getTotalWinnings());
@@ -74,57 +79,24 @@ public class RuletteService {
 
         //TODO ensure transactionality!!!!!!!!!!
         //JF save to DB
-        MultiBet entity = mapper.toEntity(response);
+        MultiBet entity = MultiBetMapper.toEntity(response);
         multiBetRepository.save(entity);
 
         return response;
     }
 
-    public List<MultiBetResponse> getListOfBets(String order, int limit) {
-        //TODO implement method to get list of bets from DB with order and limit
+    public Page<MultiBetResponse> getListOfBets(String direction, int limit) {
+        Sort sort = direction.equalsIgnoreCase("desc")
+        ? Sort.by("createdAt").descending()
+        : Sort.by("createdAt").ascending();
 
-        //mock implementation
-                MultiBetResponse.SingleBetResult bet1 = new MultiBetResponse.SingleBetResult();
-        bet1.setBetType("NUMBER");
-        bet1.setTarget("17");
-        bet1.setAmount(100);
-        bet1.setIsWin(false);
-        bet1.setPayout(0);
+        Pageable pageable = PageRequest.of(0, limit, sort);
 
-        MultiBetResponse.SingleBetResult bet2 = new MultiBetResponse.SingleBetResult();
-        bet2.setBetType("COLOR");
-        bet2.setTarget("BLACK");
-        bet2.setAmount(100);
-        bet2.setIsWin(true);
-        bet2.setPayout(200);
+        Page<MultiBet> page = multiBetRepository.findAll(pageable);
 
-        MultiBetResponse response = new MultiBetResponse();
-        response.setUserID("1");
-        response.setSpinResultColor("BLACK");
-        response.setSpinResultNumber(3);
-        response.setTotalWinnings(200);
-        response.setBetResults(List.of(bet1, bet2));
+        //transform to response object
+        Page<MultiBetResponse> response = page.map(MultiBetMapper::toDto);
 
-        MultiBetResponse.SingleBetResult bet3 = new MultiBetResponse.SingleBetResult();
-        bet3.setBetType("NUMBER");
-        bet3.setTarget("16");
-        bet3.setAmount(100);
-        bet3.setIsWin(false);
-        bet3.setPayout(0);
-
-        MultiBetResponse.SingleBetResult bet4 = new MultiBetResponse.SingleBetResult();
-        bet4.setBetType("COLOR");
-        bet4.setTarget("BLACK");
-        bet4.setAmount(100);
-        bet4.setIsWin(true);
-        bet4.setPayout(200);
-
-        MultiBetResponse response2 = new MultiBetResponse();
-        response2.setUserID("2");
-        response2.setSpinResultColor("RED");
-        response2.setSpinResultNumber(4);
-        response2.setTotalWinnings(0);
-        response2.setBetResults(List.of(bet3, bet4));
-        return List.of(response, response2);
+        return response; 
     }
 }

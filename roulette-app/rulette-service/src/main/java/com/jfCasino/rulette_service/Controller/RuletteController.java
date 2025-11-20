@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+
 
 import com.jfCasino.rulette_service.Domain.Bet;
 import com.jfCasino.rulette_service.dto.request.MultiBetRequest;
@@ -40,10 +42,10 @@ public class RuletteController {
 
     //TODO eventualy replace with communication via Kafka
     @GetMapping("/rulette/bets")
-    public ResponseEntity<List<MultiBetResponse>> getBets(@RequestParam(name = "order", defaultValue = "asc") String order,
+    public ResponseEntity<Page<MultiBetResponse>> getBets(@RequestParam(name = "order", defaultValue = "asc") String order,
      @RequestParam(name= "limit", defaultValue = "10") int limit) {
 
-        List<MultiBetResponse> bets = ruletteService.getListOfBets(order, limit);    
+        Page<MultiBetResponse> bets = ruletteService.getListOfBets(order, limit);    
         
         return ResponseEntity.ok(bets);
     }

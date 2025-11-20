@@ -6,10 +6,12 @@ import com.jfCasino.rulette_service.Entities.SingleBetResult;
 import com.jfCasino.rulette_service.dto.response.MultiBetResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class MultiBetMapper {
 
-    public MultiBet toEntity(MultiBetResponse dto) {
+    public static MultiBet toEntity(MultiBetResponse dto) {
 
         MultiBet entity = new MultiBet();
         entity.setUserId(dto.getUserID());
@@ -32,7 +34,7 @@ public class MultiBetMapper {
         return entity;
     }
 
-    public MultiBetResponse toDto(String userID, String spinResultColor, int spinResultNumber,
+    public static MultiBetResponse MultiBetResponseFactory(String userID, String spinResultColor, int spinResultNumber,
      java.util.List<Bet> bets, String odd_even, String thirds) {
         MultiBetResponse response = new MultiBetResponse();
         response.setUserID(userID);
@@ -54,5 +56,34 @@ public class MultiBetMapper {
         response.setTotalWinnings(totalWinnings);
 
         return response;
+    }
+
+    public static MultiBetResponse toDto(MultiBet multiBet) {
+        MultiBetResponse response = new MultiBetResponse();
+        response.setUserID(multiBet.getUserId());
+        response.setSpinResultNumber(multiBet.getSpinResultNumber());
+        response.setSpinResultColor(multiBet.getSpinResultColor());
+        response.setTotalWinnings(multiBet.getTotalWinnings());
+        
+        List<MultiBetResponse.SingleBetResult> betResults = multiBet.getBetResults()
+            .stream()
+            .map(MultiBetMapper::mapSingleBet)
+            .toList();
+
+        response.setBetResults(betResults);
+
+        return response;
+    }
+
+    private static MultiBetResponse.SingleBetResult mapSingleBet(SingleBetResult entity) {
+        MultiBetResponse.SingleBetResult dto = new MultiBetResponse.SingleBetResult();
+
+        dto.setBetType(entity.getBetType());
+        dto.setTarget(entity.getTarget());
+        dto.setAmount(entity.getAmount());
+        dto.setIsWin(entity.isWin());
+        dto.setPayout(entity.getPayout());
+
+        return dto;
     }
 }
