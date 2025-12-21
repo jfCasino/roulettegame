@@ -1,17 +1,21 @@
 spring:
   application:
-    name: Rulette Service
+    name: roulette-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/rouletteDB   # your DB URL
-    username: jf76272                              # your DB username
-    password: password                          # your DB password
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:rouletteDB}
+    username: ${DB_USERNAME:jf76272}
+    password: ${DB_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update     # automatically creates/updates tables based on entities
-    show-sql: true         # optional, shows SQL statements in console
+      ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
-        format_sql: true   # optional, formats SQL nicely in logs
+        format_sql: true
+
+server:
+  port: ${SERVER_PORT:8080}
+  address: 0.0.0.0
