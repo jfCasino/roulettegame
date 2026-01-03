@@ -1,10 +1,41 @@
 package com.jfCasino.rulette_service.dto.internal;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(
+    name = "WalletCommitResponse",
+    description = "Response returned after committing a wallet transaction"
+)
 public class WalletCommitResponse {
+
+    @Schema(
+        description = "Unique identifier of the commit operation",
+        example = "commit-987654"
+    )
     private String commitID;
+
+    @Schema(
+        description = "Identifier of the wallet reservation that was committed",
+        example = "res-987654"
+    )
     private String reservationID;
+
+    @Schema(
+        description = "Unique identifier of the user whose wallet was affected",
+        example = "user-12345"
+    )
     private String userID;
+
+    @Schema(
+        description = "Amount charged from the wallet",
+        example = "150"
+    )
     private int amount;
+
+    @Schema(
+        description = "New wallet balance after the commit",
+        example = "850"
+    )
     private int newBalance;
 
     public WalletCommitResponse() {}

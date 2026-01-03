@@ -1,12 +1,44 @@
 package com.jfCasino.rulette_service.dto.response;
 import java.util.List;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(
+    name = "MultiBetResponse",
+    description = "Response returned after resolving a roulette spin with multiple bets"
+)
 public class MultiBetResponse {
+    @Schema(
+        description = "Unique identifier of the user who placed the bets",
+        example = "user-12345"
+    )
     private String userID;
+
+    @Schema(
+        description = "Color result of the roulette spin",
+        example = "RED",
+        allowableValues = { "RED", "BLACK", "GREEN" }
+    )
     private String spinResultColor;
+
+    @Schema(
+        description = "Number result of the roulette spin",
+        example = "17",
+        minimum = "0",
+        maximum = "36"
+    )
     private int spinResultNumber;
+
+    @Schema(
+        description = "Detailed results for each individual bet placed by the user"
+    )
     private List<SingleBetResult> betResults;
+
+    @Schema(
+        description = "Total winnings from all bets combined",
+        example = "250"
+    )
     private int totalWinnings;
+
 
     public MultiBetResponse() {}
 
@@ -50,12 +82,47 @@ public class MultiBetResponse {
         this.totalWinnings = totalWinnings;
     }
 
-    static public class SingleBetResult {
+    @Schema(
+        name = "SingleBetResult",
+        description = "Result of a single roulette bet"
+    )
+    public static class SingleBetResult {
+
+        @Schema(
+            description = "Type of the roulette bet",
+            example = "NUMBER",
+            allowableValues = {
+                "NUMBER",
+                "COLOR",
+                "ODD_EVEN",
+                "THIRDS"
+            }
+        )
         private String betType;
+
+        @Schema(
+            description = "Target value of the bet",
+            example = "17"
+        )
         private String target;
+
+        @Schema(
+            description = "Amount wagered on this bet",
+            example = "50"
+        )
         private int amount;
+
+        @Schema(
+            description = "Indicates whether the bet won",
+            example = "true"
+        )
         private boolean isWin;
-        private int payout; //amount + winnings
+
+        @Schema(
+            description = "Total payout for this bet (stake + winnings)",
+            example = "180"
+        )
+        private int payout;
 
         public SingleBetResult() {}
 

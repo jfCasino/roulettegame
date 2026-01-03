@@ -1,14 +1,40 @@
 package com.jfCasino.rulette_service.dto.internal;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(
+    name = "WalletReserveResponse",
+    description = "Response returned after reserving funds in a wallet"
+)
 public class WalletReserveResponse {
 
     public static final String STATUS_PENDING = "PENDING";
     public static final String STATUS_FAILED = "FAILED";
 
+    @Schema(
+        description = "Unique identifier of the reservation",
+        example = "res-987654"
+    )
     private String reservationID;
+
+    @Schema(
+        description = "Unique identifier of the user whose funds are reserved",
+        example = "user-12345"
+    )
     private String userID;
+
+    @Schema(
+        description = "Amount of funds reserved",
+        example = "150"
+    )
     private int amount;
-    private String status; //e.g., "PENDING", "FAILED"
+
+    @Schema(
+        description = "Current status of the reservation",
+        example = "PENDING",
+        allowableValues = { "PENDING", "FAILED" }
+    )
+    private String status;
 
     public WalletReserveResponse() {}
 
