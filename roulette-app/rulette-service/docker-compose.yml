@@ -13,8 +13,9 @@ services:
     ports:
       - "5432:5432"
 
+
   rulette-service:
-    image: rulette-service:1.0.0
+    build: ./
     container_name: rulette-service
     ports:
       - "8080:8080"
@@ -26,3 +27,4 @@ services:
       SERVER_ADDRESS: 0.0.0.0
     depends_on:
       - roulette-db
+
