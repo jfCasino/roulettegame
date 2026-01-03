@@ -12,6 +12,8 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
+    networks:
+      - roulette-network
 
 
   rulette-service:
@@ -23,8 +25,15 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://roulette-db:5432/rouletteDB
       SPRING_DATASOURCE_USERNAME: jf76272
       SPRING_DATASOURCE_PASSWORD: password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      WALLET_SERVICE_URL: http://wallet-service:8080
       SERVER_PORT: 8080
       SERVER_ADDRESS: 0.0.0.0
     depends_on:
       - roulette-db
+    networks:
+      - roulette-network
 
+networks:
+  roulette-network:
+    external: true

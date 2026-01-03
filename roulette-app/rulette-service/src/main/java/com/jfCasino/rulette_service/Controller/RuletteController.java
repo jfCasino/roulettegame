@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Page;
 
 
-import com.jfCasino.rulette_service.Domain.Bet;
+import com.jfCasino.rulette_service.Domain.RouletteBet;
 import com.jfCasino.rulette_service.dto.request.MultiBetRequest;
 import com.jfCasino.rulette_service.dto.response.MultiBetResponse;
 
@@ -44,8 +44,8 @@ public class RuletteController {
     })
     public ResponseEntity<MultiBetResponse> placeBet(@RequestBody MultiBetRequest request) {
         //JF changes DTO SingleBetRequest to Domain bets
-        List<Bet> bets = request.getBets().stream()
-            .map(betRequest -> new Bet(betRequest.getBetType(), betRequest.getTarget(), betRequest.getAmount()))
+        List<RouletteBet> bets = request.getBets().stream()
+            .map(betRequest -> new RouletteBet(betRequest.getBetType(), betRequest.getTarget(), betRequest.getAmount()))
             .toList();
 
         MultiBetResponse response = ruletteService.placeBet(request.getUserID(), bets);

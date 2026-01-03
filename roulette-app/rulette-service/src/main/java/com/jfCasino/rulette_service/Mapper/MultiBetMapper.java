@@ -1,6 +1,6 @@
 package com.jfCasino.rulette_service.Mapper;
 
-import com.jfCasino.rulette_service.Domain.Bet;
+import com.jfCasino.rulette_service.Domain.RouletteBet;
 import com.jfCasino.rulette_service.Entities.MultiBet;
 import com.jfCasino.rulette_service.Entities.SingleBetResult;
 import com.jfCasino.rulette_service.dto.response.MultiBetResponse;
@@ -35,14 +35,14 @@ public class MultiBetMapper {
     }
 
     public static MultiBetResponse MultiBetResponseFactory(String userID, String spinResultColor, int spinResultNumber,
-     java.util.List<Bet> bets, String odd_even, String thirds) {
+     java.util.List<RouletteBet> bets, String odd_even, String thirds) {
         MultiBetResponse response = new MultiBetResponse();
         response.setUserID(userID);
         response.setSpinResultColor(spinResultColor);
         response.setSpinResultNumber(spinResultNumber);
         response.setBetResults(new java.util.ArrayList<>());
         int totalWinnings = 0;
-        for (Bet bet : bets) {
+        for (RouletteBet bet : bets) {
             MultiBetResponse.SingleBetResult betResult = new MultiBetResponse.SingleBetResult();
             betResult.setBetType(bet.getBetType());
             betResult.setTarget(bet.getTarget());

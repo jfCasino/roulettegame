@@ -4,10 +4,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import com.jfCasino.rulette_service.Client.WalletClient;
-import com.jfCasino.rulette_service.Domain.Bet;
+import com.jfCasino.rulette_service.Domain.RouletteBet;
 import com.jfCasino.rulette_service.Entities.MultiBet;
 import com.jfCasino.rulette_service.Mapper.MultiBetMapper;
 import com.jfCasino.rulette_service.Repository.MultiBetRepository;
@@ -16,6 +17,7 @@ import com.jfCasino.rulette_service.dto.internal.WalletCommitRequest;
 import com.jfCasino.rulette_service.dto.internal.WalletCommitResponse;
 import com.jfCasino.rulette_service.dto.internal.WalletReserveRequest;
 import com.jfCasino.rulette_service.dto.response.MultiBetResponse;
+import com.jfCasino.rulette_service.Domain.BetCreatedEvent;
 
 import java.util.List;
 import java.security.SecureRandom;
@@ -31,22 +33,26 @@ public class RuletteService {
     private final MultiBetRepository multiBetRepository;
     
     private final MultiBetMapper mapper;
+
+    private final KafkaTemplate<String, BetCreatedEvent> kafkaTemplate;
     
     public static final int ROULETTE_SIZE = 36;
     public static final int ROULETTE_ZERO = 0;
     public static final int ROULETTE_1ST = 12;
     public static final int ROULETTE_2ND = 24;
 
-    public RuletteService(SecureRandom secureRandom, WalletClient walletClient, MultiBetRepository multiBetRepository, MultiBetMapper mapper) {
+    public RuletteService(SecureRandom secureRandom, WalletClient walletClient,
+         MultiBetRepository multiBetRepository, MultiBetMapper mapper, KafkaTemplate<String, BetCreatedEvent> kafkaTemplate) {
         this.secureRandom = secureRandom;
         this.walletClient = walletClient;
         this.multiBetRepository = multiBetRepository;
         this.mapper = mapper;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
-    public MultiBetResponse placeBet(String userID, List<Bet> bets) {
+    public MultiBetResponse placeBet(String userID, List<RouletteBet> bets) {
         //JF create WalletReserveRequest from bets total amount
-        int totalBetAmount = bets.stream().mapToInt(Bet::getAmount).sum();
+        int totalBetAmount = bets.stream().mapToInt(RouletteBet::getAmount).sum();
         WalletReserveRequest reserveRequest = new WalletReserveRequest(userID, totalBetAmount);
 
         //JF call wallet/reserve
@@ -81,6 +87,19 @@ public class RuletteService {
         //JF save to DB
         MultiBet entity = MultiBetMapper.toEntity(response);
         multiBetRepository.save(entity);
+
+        //publish event to Kafka
+        BetCreatedEvent event = new BetCreatedEvent(
+            entity.getId(),
+            entity.getUserId(),
+            "roulette",
+            totalBetAmount,
+            response.getTotalWinnings(),
+            entity.getCreatedAt()
+        );
+
+        //poslji na kafko
+        kafkaTemplate.send("bets-topic", event);
 
         return response;
     }

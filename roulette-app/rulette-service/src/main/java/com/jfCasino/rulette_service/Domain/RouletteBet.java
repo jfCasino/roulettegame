@@ -1,6 +1,6 @@
 package com.jfCasino.rulette_service.Domain;
 
-public class Bet {
+public class RouletteBet {
     private String betType; // eg. "NUMBER", "COLOR", "ODD_EVEN", "THIRDS
     private String target;  // eg. "17", "RED", "ODD", "1ST"
     private int amount;
@@ -10,9 +10,9 @@ public class Bet {
     public static final int PAYOUT_ODD_EVEN = 2;
     public static final int PAYOUT_THIRDS = 3;
 
-    public Bet() {}
+    public RouletteBet() {}
 
-    public Bet(String betType, String target, int amount) {
+    public RouletteBet(String betType, String target, int amount) {
         this.betType = betType;
         this.target = target;
         this.amount = amount;
