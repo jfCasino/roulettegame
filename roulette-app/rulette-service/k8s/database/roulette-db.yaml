@@ -1,0 +1,76 @@
+# k8s/databases/roulette-db.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: roulette-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: roulette-db-secret
+type: Opaque
+stringData:
+  DB_USERNAME: jf76272
+  DB_PASSWORD: password
+  DB_NAME: rouletteDB
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: roulette-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: roulette-db
+  template:
+    metadata:
+      labels:
+        app: roulette-db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: roulette-db-secret
+                key: DB_USERNAME
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: roulette-db-secret
+                key: DB_PASSWORD
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: roulette-db-secret
+                key: DB_NAME
+        ports:
+          - containerPort: 5432
+        volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: roulette-db-storage
+      volumes:
+        - name: roulette-db-storage
+          persistentVolumeClaim:
+            claimName: roulette-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: roulette-db-service
+spec:
+  selector:
+    app: roulette-db
+  ports:
+    - protocol: TCP
+      port: 5432      # matches DB_PORT in Spring Boot
+      targetPort: 5432

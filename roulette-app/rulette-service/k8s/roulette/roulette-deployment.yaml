@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: roulette-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: roulette-service
+  template:
+    metadata:
+      labels:
+        app: roulette-service
+    spec:
+      containers:
+        - name: roulette-service
+          image: jf76272/roulette-service:1.0.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              value: roulette-db-service
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: rouletteDB
+            - name: DB_USERNAME
+              value: jf76272
+            - name: DB_PASSWORD
+              value: password
+            - name: WALLET_SERVICE_URL
+              value: http://wallet-service:8080
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: kafka:9092
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
