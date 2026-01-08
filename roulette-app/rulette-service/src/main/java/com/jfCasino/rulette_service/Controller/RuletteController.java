@@ -34,7 +34,7 @@ public class RuletteController {
         this.ruletteService = ruletteService;
     }
 
-    @PostMapping("/rulette/bet")
+    @PostMapping("/roulette/bet")
     @Operation(summary = "Place multiple bets for a roulette spin",
                description = "Accepts a MultiBetRequest and returns a MultiBetResponse including results and payouts")
     @ApiResponses(value = {

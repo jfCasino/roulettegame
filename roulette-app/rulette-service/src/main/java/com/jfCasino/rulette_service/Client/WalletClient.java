@@ -12,7 +12,7 @@ import com.jfCasino.rulette_service.dto.internal.WalletReserveResponse;
 
 @FeignClient(
     name = "wallet-service",
-    url = "${wallet.service.url}"  // will be set via env or application.yml
+    url = "${WALLET_SERVICE_URL}"  // will be set via env or application.yml
 )
 public interface WalletClient {
     @PostMapping("/wallets/reserve")

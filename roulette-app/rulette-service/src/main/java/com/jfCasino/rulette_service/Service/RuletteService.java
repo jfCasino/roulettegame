@@ -99,7 +99,7 @@ public class RuletteService {
         );
 
         //poslji na kafko
-        kafkaTemplate.send("bets-topic", event);
+        kafkaTemplate.send("stats-eventhu", event);
 
         return response;
     }

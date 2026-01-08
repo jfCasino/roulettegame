@@ -16,7 +16,7 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 // Apply CORS to all endpoints
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:4200") // Angular dev server
+                        .allowedOrigins("http://localhost:4200", "https://4.178.14.66") // Angular dev server
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
