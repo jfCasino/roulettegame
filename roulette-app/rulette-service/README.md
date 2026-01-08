@@ -71,7 +71,7 @@ Wallet   Roulette  Stats
  - Kafka -> komunikacija med mikrostoritvami
  - Docker
  - Kubernetes
- - Spring Boot Actuator -> preverjanje zdravja
+ - Spring Boot Actuator -> preverjanje zdravja (http://localhost:8082/swagger-ui/index.html)
  - Swagger/OpenApi -> dokumentacija API endpointov
 
 ## API endpoints
