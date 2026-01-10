@@ -57,9 +57,9 @@ Glede na funkcionalnosti, so implementirane sledeče mikrostoritve:
 Wallet   Roulette  Stats
    ^        |        v
    |        |        |
-   +-REST-->+--Kafka->+
+   +        +--Kafka--+
    |                 |
-   +<----- REST ------+
+   +------ REST ------+
 
 ## tehnologije
  - Java 21, Spring Boot -> backend ogrodje
