@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 @Schema(
     name = "MultiBetRequest",
@@ -81,7 +82,7 @@ public class MultiBetRequest {
             minimum = "1"
         )
         @Min(1)
-        private int amount;
+        private BigDecimal amount;
 
         public SingleBetRequest() {}
 
@@ -101,11 +102,11 @@ public class MultiBetRequest {
             this.target = target;
         }
 
-        public int getAmount() {
+        public BigDecimal getAmount() {
             return amount;
         }
 
-        public void setAmount(int amount) {
+        public void setAmount(BigDecimal amount) {
             this.amount = amount;
         }
 

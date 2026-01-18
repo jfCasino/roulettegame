@@ -2,6 +2,8 @@ package com.jfCasino.rulette_service.dto.internal;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.math.BigDecimal;
+
 @Schema(
     name = "WalletCommitResponse",
     description = "Response returned after committing a wallet transaction"
@@ -30,17 +32,17 @@ public class WalletCommitResponse {
         description = "Amount charged from the wallet",
         example = "150"
     )
-    private int amount;
+    private BigDecimal amount;
 
     @Schema(
         description = "New wallet balance after the commit",
         example = "850"
     )
-    private int newBalance;
+    private BigDecimal newBalance;
 
     public WalletCommitResponse() {}
 
-    public WalletCommitResponse(String commitID, String reservationID, String userID, int amount, int newBalance) {
+    public WalletCommitResponse(String commitID, String reservationID, String userID, BigDecimal amount, BigDecimal newBalance) {
         this.commitID = commitID;
         this.reservationID = reservationID;
         this.userID = userID;
@@ -73,19 +75,19 @@ public class WalletCommitResponse {
         this.userID = userID;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
-    public int getNewBalance() {
+    public BigDecimal getNewBalance() {
         return newBalance;
     }
 
-    public void setNewBalance(int newBalance) {
+    public void setNewBalance(BigDecimal newBalance) {
         this.newBalance = newBalance;
     }
 }

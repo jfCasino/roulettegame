@@ -1,49 +1,51 @@
 package com.jfCasino.rulette_service.Domain;
 
+import java.math.BigDecimal;
+
 public class RouletteBet {
     private String betType; // eg. "NUMBER", "COLOR", "ODD_EVEN", "THIRDS
     private String target;  // eg. "17", "RED", "ODD", "1ST"
-    private int amount;
+    private BigDecimal amount;
 
-    public static final int PAYOUT_NUMBER = 36;
-    public static final int PAYOUT_COLOR = 2;
-    public static final int PAYOUT_ODD_EVEN = 2;
-    public static final int PAYOUT_THIRDS = 3;
+    public static final BigDecimal PAYOUT_NUMBER = BigDecimal.valueOf(36);
+    public static final BigDecimal PAYOUT_COLOR = BigDecimal.valueOf(2);
+    public static final BigDecimal PAYOUT_ODD_EVEN = BigDecimal.valueOf(2);
+    public static final BigDecimal PAYOUT_THIRDS = BigDecimal.valueOf(3);
 
     public RouletteBet() {}
 
-    public RouletteBet(String betType, String target, int amount) {
+    public RouletteBet(String betType, String target, BigDecimal amount) {
         this.betType = betType;
         this.target = target;
         this.amount = amount;
     }
 
-    public int getPayout(String spinResultColor, String spinResultNumber, String odd_even, String thirds) {
+    public BigDecimal getPayout(String spinResultColor, String spinResultNumber, String odd_even, String thirds) {
         switch (betType) {
             case "NUMBER":
                 if (this.target.equals(spinResultNumber)) {
-                    return this.amount * PAYOUT_NUMBER;
+                    return this.amount.multiply(PAYOUT_NUMBER);
                 }
                 break;
             case "COLOR":
                 if (this.target.equals(spinResultColor)) {
-                    return this.amount * PAYOUT_COLOR;
+                    return this.amount.multiply(PAYOUT_COLOR);
                 }
                 break;
             case "ODD_EVEN":
                 if (this.target.equals(odd_even)) {
-                    return this.amount * PAYOUT_ODD_EVEN;
+                    return this.amount.multiply(PAYOUT_ODD_EVEN);
                 }
                 break;
             case "THIRDS":
                 if (this.target.equals(thirds)) {
-                    return this.amount * PAYOUT_THIRDS;
+                    return this.amount.multiply(PAYOUT_THIRDS);
                 }
                 break;
             default:
-                return 0;
+                return BigDecimal.ZERO;
         }
-        return 0;
+        return BigDecimal.ZERO;
     }
 
     public String getBetType() {
@@ -62,11 +64,11 @@ public class RouletteBet {
         this.target = target;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 }

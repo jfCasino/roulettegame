@@ -2,6 +2,8 @@ package com.jfCasino.rulette_service.dto.response;
 import java.util.List;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.math.BigDecimal;
+
 @Schema(
     name = "MultiBetResponse",
     description = "Response returned after resolving a roulette spin with multiple bets"
@@ -37,7 +39,7 @@ public class MultiBetResponse {
         description = "Total winnings from all bets combined",
         example = "250"
     )
-    private int totalWinnings;
+    private BigDecimal totalWinnings;
 
 
     public MultiBetResponse() {}
@@ -74,11 +76,11 @@ public class MultiBetResponse {
         this.betResults = betResults;
     }
 
-    public int getTotalWinnings() {
+    public BigDecimal getTotalWinnings() {
         return totalWinnings;
     }
 
-    public void setTotalWinnings(int totalWinnings) {
+    public void setTotalWinnings(BigDecimal totalWinnings) {
         this.totalWinnings = totalWinnings;
     }
 
@@ -110,7 +112,7 @@ public class MultiBetResponse {
             description = "Amount wagered on this bet",
             example = "50"
         )
-        private int amount;
+        private BigDecimal amount;
 
         @Schema(
             description = "Indicates whether the bet won",
@@ -122,7 +124,7 @@ public class MultiBetResponse {
             description = "Total payout for this bet (stake + winnings)",
             example = "180"
         )
-        private int payout;
+        private BigDecimal payout;
 
         public SingleBetResult() {}
 
@@ -142,11 +144,11 @@ public class MultiBetResponse {
             this.target = target;
         }
 
-        public int getAmount() {
+        public BigDecimal getAmount() {
             return amount;
         }
 
-        public void setAmount(int amount) {
+        public void setAmount(BigDecimal amount) {
             this.amount = amount;
         }
 
@@ -158,11 +160,11 @@ public class MultiBetResponse {
             this.isWin = isWin;
         }
 
-        public int getPayout() {
+        public BigDecimal getPayout() {
             return payout;
         }
 
-        public void setPayout(int payout) {
+        public void setPayout(BigDecimal payout) {
             this.payout = payout;
         }
     }

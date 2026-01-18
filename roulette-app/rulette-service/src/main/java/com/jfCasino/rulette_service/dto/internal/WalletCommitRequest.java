@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
+import java.math.BigDecimal;
+
 @Schema(
     name = "WalletCommitRequest",
     description = "Request sent to the wallet service to commit a previously reserved wallet transaction"
@@ -32,11 +34,11 @@ public class WalletCommitRequest {
         minimum = "0"
     )
     @Min(0)
-    private int amount;
+    private BigDecimal amount;
 
     public WalletCommitRequest() {};
 
-    public WalletCommitRequest(String reservationID, String userID, int amount) {
+    public WalletCommitRequest(String reservationID, String userID, BigDecimal amount) {
         this.reservationID = reservationID;
         this.userID = userID;
         this.amount = amount;
@@ -59,11 +61,11 @@ public class WalletCommitRequest {
         this.userID = userID;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 }

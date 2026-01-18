@@ -2,6 +2,8 @@ package com.jfCasino.rulette_service.dto.internal;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.math.BigDecimal;
+
 @Schema(
     name = "WalletReserveResponse",
     description = "Response returned after reserving funds in a wallet"
@@ -27,7 +29,7 @@ public class WalletReserveResponse {
         description = "Amount of funds reserved",
         example = "150"
     )
-    private int amount;
+    private BigDecimal amount;
 
     @Schema(
         description = "Current status of the reservation",
@@ -38,7 +40,7 @@ public class WalletReserveResponse {
 
     public WalletReserveResponse() {}
 
-    public WalletReserveResponse(String reservationID, String userID, int amount, String status) {
+    public WalletReserveResponse(String reservationID, String userID, BigDecimal amount, String status) {
         this.reservationID = reservationID;
         this.userID = userID;
         this.amount = amount;
@@ -53,7 +55,7 @@ public class WalletReserveResponse {
         return userID;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
@@ -69,7 +71,7 @@ public class WalletReserveResponse {
         this.userID = userID;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

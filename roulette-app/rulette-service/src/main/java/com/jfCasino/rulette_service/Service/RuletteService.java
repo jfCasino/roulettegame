@@ -21,6 +21,7 @@ import com.jfCasino.rulette_service.Domain.BetCreatedEvent;
 
 import java.util.List;
 import java.security.SecureRandom;
+import java.math.BigDecimal;
 
 
 @Service
@@ -52,7 +53,8 @@ public class RuletteService {
 
     public MultiBetResponse placeBet(String userID, List<RouletteBet> bets) {
         //JF create WalletReserveRequest from bets total amount
-        int totalBetAmount = bets.stream().mapToInt(RouletteBet::getAmount).sum();
+        BigDecimal totalBetAmount = bets.stream()
+        .map(RouletteBet::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
         WalletReserveRequest reserveRequest = new WalletReserveRequest(userID, totalBetAmount);
 
         //JF call wallet/reserve
@@ -83,7 +85,6 @@ public class RuletteService {
             throw new RuntimeException("Wallet commit failed");
         }
 
-        //TODO ensure transactionality!!!!!!!!!!
         //JF save to DB
         MultiBet entity = MultiBetMapper.toEntity(response);
         multiBetRepository.save(entity);

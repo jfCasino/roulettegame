@@ -7,6 +7,7 @@ import com.jfCasino.rulette_service.dto.response.MultiBetResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 @Component
 public class MultiBetMapper {
@@ -41,16 +42,16 @@ public class MultiBetMapper {
         response.setSpinResultColor(spinResultColor);
         response.setSpinResultNumber(spinResultNumber);
         response.setBetResults(new java.util.ArrayList<>());
-        int totalWinnings = 0;
+        BigDecimal totalWinnings = BigDecimal.ZERO;
         for (RouletteBet bet : bets) {
             MultiBetResponse.SingleBetResult betResult = new MultiBetResponse.SingleBetResult();
             betResult.setBetType(bet.getBetType());
             betResult.setTarget(bet.getTarget());
             betResult.setAmount(bet.getAmount());
-            int payout = bet.getPayout(spinResultColor, String.valueOf(spinResultNumber), odd_even, thirds);
-            totalWinnings += payout;
+            BigDecimal payout = bet.getPayout(spinResultColor, String.valueOf(spinResultNumber), odd_even, thirds);
+            totalWinnings = totalWinnings.add( payout);
             betResult.setPayout(payout);
-            betResult.setIsWin(betResult.getPayout() > 0);
+            betResult.setIsWin(betResult.getPayout().compareTo(BigDecimal.ZERO) > 0);
             response.getBetResults().add(betResult);
         }
         response.setTotalWinnings(totalWinnings);

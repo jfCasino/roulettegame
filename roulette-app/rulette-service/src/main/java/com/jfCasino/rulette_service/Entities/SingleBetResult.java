@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "single_bet_result")
@@ -19,9 +20,9 @@ public class SingleBetResult {
 
     private String betType;
     private String target;
-    private int amount;
+    private BigDecimal amount;
     private boolean isWin;
-    private int payout;
+    private BigDecimal payout;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -56,11 +57,11 @@ public class SingleBetResult {
         this.target = target;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -72,11 +73,11 @@ public class SingleBetResult {
         isWin = win;
     }
 
-    public int getPayout() {
+    public BigDecimal getPayout() {
         return payout;
     }
 
-    public void setPayout(int payout) {
+    public void setPayout(BigDecimal payout) {
         this.payout = payout;
     }
 

@@ -2,20 +2,21 @@ package com.jfCasino.rulette_service.Domain;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.math.BigDecimal;
 
 public class BetCreatedEvent {
     private UUID id;
     private String userId;
     private String gameId;
-    private int totalStake;
-    private int totalWinnings;
+    private BigDecimal totalStake;
+    private BigDecimal totalWinnings;
     private Instant createdAt;
 
     // Constructors
     public BetCreatedEvent() {
     }
 
-    public BetCreatedEvent(UUID id, String userId, String gameId, int totalStake, int totalWinnings, Instant createdAt) {
+    public BetCreatedEvent(UUID id, String userId, String gameId, BigDecimal totalStake, BigDecimal totalWinnings, Instant createdAt) {
         this.id = id;
         this.userId = userId;
         this.gameId = gameId;
@@ -45,19 +46,19 @@ public class BetCreatedEvent {
         this.gameId = gameId;
     }
 
-    public int getTotalStake() {
+    public BigDecimal getTotalStake() {
         return totalStake;
     }
 
-    public void setTotalStake(int totalStake) {
+    public void setTotalStake(BigDecimal totalStake) {
         this.totalStake = totalStake;
     }
 
-    public int getTotalWinnings() {
+    public BigDecimal getTotalWinnings() {
         return totalWinnings;
     }
 
-    public void setTotalWinnings(int totalWinnings) {
+    public void setTotalWinnings(BigDecimal totalWinnings) {
         this.totalWinnings = totalWinnings;
     }
 

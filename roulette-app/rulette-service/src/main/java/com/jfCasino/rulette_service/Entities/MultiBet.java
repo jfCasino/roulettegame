@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "multi_bet")
@@ -25,7 +26,7 @@ public class MultiBet {
 
     private int spinResultNumber;
 
-    private int totalWinnings;
+    private BigDecimal totalWinnings;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -68,11 +69,11 @@ public class MultiBet {
         this.spinResultNumber = spinResultNumber;
     }
 
-    public int getTotalWinnings() {
+    public BigDecimal getTotalWinnings() {
         return totalWinnings;
     }
 
-    public void setTotalWinnings(int totalWinnings) {
+    public void setTotalWinnings(BigDecimal totalWinnings) {
         this.totalWinnings = totalWinnings;
     }
 

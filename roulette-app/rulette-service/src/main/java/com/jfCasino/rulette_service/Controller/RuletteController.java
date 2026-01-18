@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import com.jfCasino.rulette_service.Service.RuletteService;
 
 import java.util.List;
+import java.math.BigDecimal;
 
 @RestController
 @Tag(name = "Roulette Service", description = "Endpoints for placing and retrieving roulette bets")
