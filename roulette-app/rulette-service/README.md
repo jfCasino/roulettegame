@@ -73,10 +73,13 @@ Wallet   Roulette  Stats
  - Kubernetes
  - Spring Boot Actuator -> preverjanje zdravja (http://localhost:8082/swagger-ui/index.html)
  - Swagger/OpenApi -> dokumentacija API endpointov
+ - Azure -> deployment
+ - ingress controlet
 
 ## API endpoints
 
 ### Wallet service
+ - POST/wallets/create
  - GET/wallets/{userId}
  - GET/wallets
  - POST/wallets/reserve
